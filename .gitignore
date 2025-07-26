@@ -1,3 +1,35 @@
+### Angular/Node.js ###
+# Build artifacts
+/dist
+/.angular
+/cache
+/build
+/server
+
+# Dependencies
+/node_modules
+/package-lock.json
+/yarn.lock
+
+# Environment
+/.env
+/.env.local
+/.env.*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.js.map
+*.d.ts
+
+# Testing
+/coverage
+/junit.xml
+
+### Python ###
 # Virtual environments
 venv/
 env/
@@ -7,7 +39,7 @@ ENV/
 env.bak/
 venv.bak/
 
-# Python
+# Python compiled files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -19,37 +51,6 @@ build/
 .eggs/
 *.egg
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Logs
-logs/
-*.log
-
-# OS files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.cursorrules
-
 # Testing
 .pytest_cache/
 .coverage
@@ -58,10 +59,37 @@ htmlcov/
 coverage.xml
 *.cover
 
-# Jupyter Notebook
+### IDE ###
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursorrules
+
+### Jupyter Notebook ###
 .ipynb_checkpoints
 *.ipynb
 
+### Database ###
+*.db
+*.sqlite
+*.sqlite3
+
+### Logs ###
+logs/
+*.log
+
+### OS Files ###
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+### Miscellaneous ###
 # Scraped data
 product_links/
 *.html
@@ -77,4 +105,12 @@ chromedriver*
 tmp/
 temp/
 *.tmp
-*.temp 
+*.temp
+
+# Firebase
+.firebase
+.firebaserc
+
+# Local configuration files
+/.firebase
+/.firebaserc
