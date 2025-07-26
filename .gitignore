@@ -48,6 +48,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.cursorrules
 
 # Testing
 .pytest_cache/
