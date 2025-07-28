@@ -259,16 +259,104 @@ class JumboDataExtractor:
             product['unit_value'] = 1
             product['unit_description'] = 'per stuk'
         
-        # 4. Generate external_sku from S3 key
-        if s3_key:
-            filename = s3_key.split('/')[-1].replace('.html', '')
-            product['external_sku'] = f"jumbo_{filename}"
+        # 4. Extract external_sku from product URL
+        logger.info("Extracting external_sku from product URL...")
+        # Look for canonical URL or product URL in meta tags
+        canonical_link = soup.find('link', {'rel': 'canonical'})
+        product_url = None
+        
+        if canonical_link and canonical_link.get('href'):
+            product_url = canonical_link.get('href')
+            logger.info(f"Found canonical URL: {product_url}")
+        
+        if product_url:
+            # Extract SKU from URL pattern: everything after last "-" before query params
+            # Example: https://www.jumbo.com/producten/aardappelen-kriel-geel-1-kg-657405ZK
+            url_parts = product_url.split('?')[0]  # Remove query params
+            url_segments = url_parts.split('-')
+            if len(url_segments) > 1:
+                external_sku = url_segments[-1]  # Last part after final "-"
+                product['external_sku'] = external_sku
+                logger.info(f"✓ Found external_sku: {external_sku}")
+            else:
+                logger.warning("Could not parse external_sku from URL")
+                # Fallback to filename-based SKU
+                if s3_key:
+                    filename = s3_key.split('/')[-1].replace('.html', '')
+                    product['external_sku'] = f"jumbo_{filename}"
+        else:
+            logger.warning("✗ Product URL not found, using fallback")
+            # Fallback to filename-based SKU
+            if s3_key:
+                filename = s3_key.split('/')[-1].replace('.html', '')
+                product['external_sku'] = f"jumbo_{filename}"
+        
+        # 5. Store id
+        product['store_id'] = 1
         
         return {
             'product': product,
             'price': price,
-            'nutrition': nutrition
+            'nutrition': nutrition,
+            
         }
+    
+    def _parse_unit_text(self, unit_text):
+        """
+        Parse unit text into flexible unit system for database storage.
+        
+        Args:
+            unit_text: String like "1 KG", "500 ML", "per stuk", "6 stuks"
+            
+        Returns:
+            tuple: (unit_type, unit_value, unit_description)
+                unit_type: 'weight', 'volume', 'piece', 'package'
+                unit_value: numeric value in base units (grams/ml/count)
+                unit_description: human readable string
+        """
+        if not unit_text:
+            return 'piece', 1, 'per stuk'
+        
+        unit_text_lower = unit_text.lower().strip()
+        
+        # Weight patterns (convert to grams)
+        weight_patterns = [
+            (r'(\d+(?:[.,]\d+)?)\s*kg', lambda x: ('weight', float(x.replace(',', '.')) * 1000, unit_text)),
+            (r'(\d+(?:[.,]\d+)?)\s*g(?:ram)?', lambda x: ('weight', float(x.replace(',', '.')), unit_text)),
+        ]
+        
+        # Volume patterns (convert to ml)
+        volume_patterns = [
+            (r'(\d+(?:[.,]\d+)?)\s*l(?:iter)?', lambda x: ('volume', float(x.replace(',', '.')) * 1000, unit_text)),
+            (r'(\d+(?:[.,]\d+)?)\s*ml', lambda x: ('volume', float(x.replace(',', '.')), unit_text)),
+        ]
+        
+        # Piece patterns
+        piece_patterns = [
+            (r'(\d+)\s*stuks?', lambda x: ('piece', int(x), unit_text)),
+            (r'per\s*stuk', lambda x: ('piece', 1, unit_text)),
+        ]
+        
+        # Try weight patterns
+        for pattern, converter in weight_patterns:
+            match = re.search(pattern, unit_text_lower)
+            if match:
+                return converter(match.group(1))
+        
+        # Try volume patterns  
+        for pattern, converter in volume_patterns:
+            match = re.search(pattern, unit_text_lower)
+            if match:
+                return converter(match.group(1))
+        
+        # Try piece patterns
+        for pattern, converter in piece_patterns:
+            match = re.search(pattern, unit_text_lower)
+            if match:
+                return converter(match.group(1))
+        
+        # Default fallback
+        return 'package', 1, unit_text
     
     def process_single_file(self):
         """
