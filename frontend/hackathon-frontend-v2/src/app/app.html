@@ -1,0 +1,12 @@
+<app-header />
+
+<div class="content-container">
+  @if (showDossier) {
+    <div class="dossier-wrapper">
+      <app-dossier />
+    </div>
+  }
+  <div class="chat-wrapper" [class.full-width]="!showDossier">
+    <app-chat-window (firstMessage)="onFirstMessageSent()" />
+  </div>
+</div>

@@ -92,7 +92,6 @@ Thumbs.db
 ### Miscellaneous ###
 # Scraped data
 product_links/
-*.html
 data/
 
 # AWS

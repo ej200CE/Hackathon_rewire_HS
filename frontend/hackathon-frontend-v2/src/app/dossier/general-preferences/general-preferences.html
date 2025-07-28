@@ -1,0 +1,84 @@
+<div class="preferences-container">
+  <h3 class="section-title">Meal Planning Preferences</h3>
+  
+  <!-- Meal Structure -->
+  <div class="preference-section">
+    <h4>Meal Structure</h4>
+    <div class="preference-item">
+      <span>Meals per day:</span>
+      <span class="value">{{ preferences.mealsPerDay }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Frequency:</span>
+      <span class="value">{{ preferences.mealFrequency }}</span>
+    </div>
+  </div>
+
+  <!-- Budget -->
+  <div class="preference-section">
+    <h4>Budget Constraints</h4>
+    <div class="preference-item">
+      <span>Per meal:</span>
+      <span class="value">€{{ preferences.budget.perMeal }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Per day:</span>
+      <span class="value">€{{ preferences.budget.perDay }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Per week:</span>
+      <span class="value">€{{ preferences.budget.perWeek }}</span>
+    </div>
+  </div>
+
+  <!-- Kitchen Equipment -->
+  <div class="preference-section">
+    <h4>Available Equipment</h4>
+    <div class="equipment-grid">
+      @for (item of objectEntries(preferences.equipment); track item.key) {
+        <div class="equipment-item">
+          <span>{{ item.key | formatEquipment }}</span>
+          <span class="value" [title]="item.value ? 'Available' : 'Not available'">
+            {{ item.value ? '✓' : '✗' }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Cooking Preferences -->
+  <div class="preference-section">
+    <h4>Cooking Preferences</h4>
+    <div class="preference-grid">
+      @for (item of objectEntries(preferences.cookingMethods); track item.key) {
+        <div class="preference-item">
+          <span>{{ item.key | titlecase }}:</span>
+          <span class="value" [title]="item.value ? 'Preferred' : 'Not preferred'">
+            {{ item.value ? '✓' : '✗' }}
+          </span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Additional Preferences -->
+  <div class="preference-section">
+    <h4>Additional Preferences</h4>
+    <div class="preference-item">
+      <span>Portion size:</span>
+      <span class="value">{{ preferences.portionSize }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Allergies:</span>
+      <span class="value">{{ preferences.allergies.join(', ') || 'None' }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Meal prep difficulty:</span>
+      <span class="value">{{ preferences.mealPrep.difficulty }}</span>
+    </div>
+    <div class="preference-item">
+      <span>Meal variability:</span>
+      <span class="value">{{ preferences.mealPrep.variability }}</span>
+    </div>
+  </div>
+</div>
