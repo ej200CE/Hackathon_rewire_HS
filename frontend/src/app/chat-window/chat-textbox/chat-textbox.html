@@ -1,0 +1,17 @@
+<div class="matrix-textbox">
+  <form (ngSubmit)="onSubmit()" #messageForm="ngForm">
+    <input 
+      type="text" 
+      id="usermessage" 
+      name="usermessage" 
+      [(ngModel)]="messageText"
+      placeholder="Type your message..."
+      class="matrix-input"
+      required
+    >
+    <button type="submit" class="matrix-button">
+      <span class="button-text">Send</span>
+      <span class="button-icon">></span>
+    </button>
+  </form>
+</div>

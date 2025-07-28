@@ -1,0 +1,13 @@
+<div class="chat-window">
+  <!-- Messages container -->
+  <div #messagesContainer class="messages-container">
+    @for (message of chatHistory; track $index) {
+      <app-chat-message [message]="message" />
+    }
+  </div>
+  
+  <!-- Textbox container - now clean -->
+  <div class="textbox-container">
+    <app-chat-textbox (messageSent)="handleNewMessage($event)"></app-chat-textbox>
+  </div>
+</div>

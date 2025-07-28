@@ -1,0 +1,35 @@
+/* Main container - critical fixes */
+.content-container {
+  display: flex;
+  height: calc(100vh - 120px);
+  width: 100vw; /* Full viewport width */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  background-color: #000;
+}
+
+/* Dossier wrapper - flexible width */
+.dossier-wrapper {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  width: 50%; /* Half width */
+  min-width: 300px; /* Minimum readable width */
+  max-width: 50%; /* Never exceed half */
+  overflow-y: auto;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+/* Chat wrapper - flexible width */
+.chat-wrapper {
+  flex: 1; /* Take remaining space */
+  min-width: 300px; /* Minimum readable width */
+  overflow: hidden; /* Contain children */
+  position: relative;
+}
+
+/* Full width when dossier hidden */
+.chat-wrapper.full-width {
+  width: 100%;
+  max-width: 100%;
+}
