@@ -2,6 +2,7 @@
 requests>=2.31.0
 PyYAML>=6.0
 beautifulsoup4>=4.12.0
+lxml
 
 # Selenium and Chrome automation
 selenium>=4.15.0
