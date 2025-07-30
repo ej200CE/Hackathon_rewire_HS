@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS food.products (
     
     description      text,
     created_at       timestamp DEFAULT now(),
-    country of origin text
+    country_of_origin text
 );
 
 /* ----------------------------------------------------------

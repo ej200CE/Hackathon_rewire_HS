@@ -1,0 +1,52 @@
+Table stores {
+  store_id    int        
+  store_marker int
+  name        varchar(60)  
+  lat         numeric(9,6)
+  lon         numeric(9,6)
+  created_at  timestamp   
+}
+
+Table products {
+  product_id       int        
+  store_marker     int 
+  external_sku     varchar(120)  
+  name             varchar
+  category         varchar
+  unit_type        varchar(20)
+  unit_value       numeric(10,2)
+  unit_description varchar(50)
+  description      varchar
+  created_at       timestamp     
+  country_of_origin varchar
+}
+
+Table prices {
+  price_id       int     
+  product_id     int            
+  scraped_at     timestamp      
+  regular_price  numeric(10,2)
+  promo_price    numeric(10,2)
+  on_promotion   boolean       
+  promo_type     varchar(40)
+  promo_text     varchar
+  price_per_kg   numeric(10,2)
+}
+
+Table nutrition {
+  nutrition_id        int         
+  product_id          int            
+  scraped_at          timestamp     
+  kcal_per_100g       numeric(10,2)
+  protein_per_100g    numeric(10,2)
+  fat_per_100g        numeric(10,2)
+  carbs_per_100g      numeric(10,2)
+  sodium_per_100g     numeric(10,2)
+  fiber_per_100g      numeric(10,2)
+  sugar_per_100g      numeric(10,2)
+  raw_json            jsonb
+}
+
+Ref: products.store_marker > stores.store_marker
+Ref: prices.product_id > products.product_id
+Ref: nutrition.product_id > products.product_id
