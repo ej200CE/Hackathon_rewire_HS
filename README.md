@@ -88,9 +88,10 @@ FoodAdvisor is an innovative dietary recommendation platform that connects users
 **Goal**: Build intelligent recommendation system with conversational capabilities
 
 1. **RAG Infrastructure Setup**
-   - Vector database selection and implementation (consider Pinecone, Weaviate, or pgvector)
-   - Embedding generation for product catalog
-   - Semantic search capabilities for product matching
+   - SQL query generation framework for PostgreSQL
+   - Natural language to SQL translation layer
+   - Query optimization for complex nutritional/price filtering
+   - Result ranking and relevance scoring algorithms
 
 2. **Multi-Agent System Architecture**
    
@@ -172,6 +173,14 @@ FoodAdvisor is an innovative dietary recommendation platform that connects users
    - Optimal shopping route planning
    - Inventory availability checking
 
+5. **Price History Analytics**
+   - Historical price trend analysis
+   - Seasonal pricing pattern detection
+   - Promotion frequency insights
+   - Price prediction models
+   - Best time to buy recommendations
+   - Inflation impact tracking
+
 ### Phase 5: Scale & Expansion
 **Goal**: Platform growth and market expansion
 
@@ -211,9 +220,6 @@ FoodAdvisor is an innovative dietary recommendation platform that connects users
    - AutoGPT/AutoGen consideration
    - Workflow orchestration tools
 
-3. **Analysis**
-   - Gathering user data 
-   - visualization and analysis of user preferences
 
 ---
 
