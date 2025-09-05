@@ -10,7 +10,7 @@ from shared.models import ProductRow, PriceRow, NutritionRow
 
 
 import os 
-os.environ["LOG_TO_STDOUT"] = "true"
+os.environ["LOG_TO_STDOUT"] = "false"
 
 auto_setup_logger()
 logger = logging.getLogger(__name__)
@@ -50,11 +50,14 @@ class JumboHTMLParser:
                 if key.lower().endswith(".html"):
                     yield key
 
-    def parse_html(self, key: str):
+    def load_html(self, key: str):
         s3 = self.s3_connect()
         body = s3.get_object(Bucket = self.bucket, Key=key)["Body"].read()
+        return body
 
-        soup = BeautifulSoup(body, "lxml")
+    def parse_html(self, content: bytes, key:str):
+
+        soup = BeautifulSoup(content, "lxml")
 
         ### ─────────── Products table ─────────── ###
 
@@ -164,8 +167,8 @@ class JumboHTMLParser:
         logger.info("Initializing S3 parser...")
 
         for key in self.iterate_html_keys():
-            row = self.parse_html(key)
-            prod = row["product"]
+            html = self.load_html(key)
+            result = self.parse_html(html, key)
         
         logger.info("S3 fully parsed.")
 
@@ -173,3 +176,4 @@ class JumboHTMLParser:
 if __name__ == "__main__":
     parser = JumboHTMLParser(Bucket, Prefix, db_url)
     parser.run()
+
