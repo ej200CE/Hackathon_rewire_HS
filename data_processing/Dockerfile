@@ -14,12 +14,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements-dev.txt /app/
+RUN pip install --no-cache-dir -r requirements-dev.txt
 
 # Copy shared libs and ETL code
 COPY shared/ /app/shared/
 COPY data_processing/ /app/data_processing/
+
+# Copy tests for CI (production images can skip this)
+COPY tests/ /app/tests/
 
 # Safe default so CI can build this image without executing AWS calls
 CMD ["python", "-c", "print('etl image built')"]
