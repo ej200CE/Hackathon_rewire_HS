@@ -10,9 +10,3 @@ requires-python = ">=3.10"
 [tool.setuptools.packages.find]
 where = ["."]
 
-# pytest.ini
-[pytest]
-testpaths = tests
-addopts = -q
-markers =
-    slow: marks tests as slow (skip in CI)
