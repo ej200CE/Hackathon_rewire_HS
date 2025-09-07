@@ -38,15 +38,15 @@ class JumboParser_test(unittest.TestCase):
         actual_output = result["product"]
         
         # Assert all fields match
-        self.assertEqual(actual_output.store_id, self.desired_output.store_id)
-        self.assertEqual(actual_output.external_sku, self.desired_output.external_sku)
-        self.assertEqual(actual_output.name, self.desired_output.name)
-        self.assertEqual(actual_output.category, self.desired_output.category)
-        self.assertEqual(actual_output.unit_type, self.desired_output.unit_type)
-        self.assertEqual(actual_output.unit_value, self.desired_output.unit_value)
-        self.assertEqual(actual_output.unit_description, self.desired_output.unit_description)
-        self.assertEqual(actual_output.description, self.desired_output.description)
-        self.assertEqual(actual_output.country_of_origin, self.desired_output.country_of_origin)
+        self.assertEqual(actual_output.store_id, desired_output.store_id)
+        self.assertEqual(actual_output.external_sku, desired_output.external_sku)
+        self.assertEqual(actual_output.name, desired_output.name)
+        self.assertEqual(actual_output.category, desired_output.category)
+        self.assertEqual(actual_output.unit_type, desired_output.unit_type)
+        self.assertEqual(actual_output.unit_value, desired_output.unit_value)
+        self.assertEqual(actual_output.unit_description, desired_output.unit_description)
+        self.assertEqual(actual_output.description, desired_output.description)
+        self.assertEqual(actual_output.country_of_origin, desired_output.country_of_origin)
 
 
     def run_all(self):
