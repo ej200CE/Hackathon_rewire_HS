@@ -1,0 +1,11 @@
+# ETL module dependencies
+# AWS integration
+boto3>=1.29.0
+
+# HTML parsing
+beautifulsoup4>=4.12.0
+lxml
+
+# Environment and utilities
+python-dotenv>=1.0.0
+

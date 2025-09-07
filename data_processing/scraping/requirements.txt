@@ -1,0 +1,14 @@
+# Scraping module dependencies
+# Web scraping and requests
+requests>=2.31.0
+PyYAML>=6.0
+
+# Selenium and Chrome automation
+selenium>=4.15.0
+undetected-chromedriver>=3.5.0
+
+# AWS integration
+boto3>=1.29.0
+
+# Environment and utilities
+python-dotenv>=1.0.0
