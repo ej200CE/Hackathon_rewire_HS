@@ -174,3 +174,10 @@ secrets.json
 # Test results
 TestResult/
 .sonarqube/
+
+### Python Agent (uv) ###
+# Ignore the virtual environment folder created by uv
+backend/sample-agent/.venv/
+
+# Ignore the file with environment variables and secrets
+backend/sample-agent/.env
