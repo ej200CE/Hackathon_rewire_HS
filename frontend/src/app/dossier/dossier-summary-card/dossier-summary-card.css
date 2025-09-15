@@ -1,0 +1,80 @@
+/* Main card styling */
+.summary-card {
+  padding: 15px;
+  background-color: rgba(0, 40, 0, 0.3); /* Slightly different background to stand out */
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  color: #00ff41;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 70px; /* Slightly smaller for a header */
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #00ff41;
+  flex-shrink: 0;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.goal-subtitle {
+  color: #00aa00;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.metrics-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.calorie-target {
+  text-align: center;
+}
+
+.calorie-value {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #ffffff;
+}
+.calorie-label {
+  font-size: 0.8rem;
+  color: #00aa00;
+}
+
+.macros-container {
+  display: flex;
+  gap: 15px;
+}
+
+.macro-item {
+  text-align: center;
+}
+
+.macro-value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+.macro-label {
+  font-size: 0.8rem;
+  color: #00aa00;
+}

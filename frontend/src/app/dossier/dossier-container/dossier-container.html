@@ -1,0 +1,32 @@
+<div class="dossier-container">
+  <app-dossier-summary-card [summaryData]="userProfile.summary"></app-dossier-summary-card>
+
+  <mat-tab-group mat-stretch-tabs="false" animationDuration="300ms">
+
+    <mat-tab label="🎯 Goals & Vitals">
+      <div class="tab-content-wrapper">
+        <app-user-goals [goalsData]="userProfile.goals"></app-user-goals>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="🍳 Preferences">
+      <div class="tab-content-wrapper">
+        <app-general-preferences [preferencesData]="userProfile.preferences"></app-general-preferences>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="🥑 Foods">
+      <div class="tab-content-wrapper">
+        <app-food-preferences [foodData]="userProfile.food"></app-food-preferences>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="⚠️ Allergies">
+      <div class="tab-content-wrapper">
+        <app-allergies [allergiesData]="userProfile.allergies"></app-allergies>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  </div>

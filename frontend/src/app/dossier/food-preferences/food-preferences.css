@@ -1,112 +1,59 @@
 /* Main container */
 .food-preferences {
-  padding: 20px;
-  background-color: rgba(0, 40, 0, 0.15);
-  border-radius: 8px;
-  border: 1px solid rgba(0, 170, 0, 0.4);
-  box-shadow: 0 2px 8px rgba(0, 80, 0, 0.3);
+  font-family: 'Courier New', monospace;
+  color: #00ff41;
 }
 
-.section-title {
-  color: #00ff88;
-  border-bottom: 1px solid rgba(0, 170, 0, 0.6);
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-}
-
-/* Two-column layout */
+/* Grid layout for the two columns */
 .preferences-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 25px;
 }
 
-@media (max-width: 768px) {
-  .preferences-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Column styling */
 .preference-column {
   background-color: rgba(0, 60, 0, 0.1);
   border-radius: 6px;
   padding: 15px;
-  border-left: 3px solid #00aa00;
 }
 
 .column-title {
   color: #00cc33;
-  margin-bottom: 15px;
-  font-size: 1rem;
+  margin: 0 0 15px 0;
   display: flex;
   align-items: center;
   gap: 8px;
+  border-bottom: 1px solid rgba(0, 170, 0, 0.2);
+  padding-bottom: 10px;
 }
 
 .column-title .icon {
-  font-weight: bold;
+  font-size: 1.2rem;
 }
 
-/* Food list items */
+/* List styling */
 .food-list {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  gap: 8px;
 }
 
 .food-item {
-  padding: 8px 12px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  background-color: rgba(0, 80, 0, 0.2);
+  border-left-width: 3px;
+  border-left-style: solid;
 }
 
+/* Specific styling for favorite vs. dislike */
 .food-item.favorite {
-  background-color: rgba(0, 80, 0, 0.2);
+  border-left-color: #00ff88;
   color: #00ff88;
-  border-left: 2px solid #00ff41;
 }
 
 .food-item.dislike {
-  background-color: rgba(80, 0, 0, 0.2);
-  color: #ff5555;
-  border-left: 2px solid #ff3333;
-}
-
-.food-item:hover {
-  transform: translateX(3px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Dietary restrictions */
-.dietary-section {
-  margin-top: 20px;
-}
-
-.section-subtitle {
-  color: #00aa00;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.restrictions-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.restriction-tag {
-  background-color: rgba(0, 100, 0, 0.3);
-  color: #00ff41;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 0.85rem;
-  border: 1px solid rgba(0, 170, 0, 0.5);
+  border-left-color: #ff5555;
+  color: #ffdddd;
 }

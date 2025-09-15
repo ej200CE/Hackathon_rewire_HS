@@ -1,0 +1,60 @@
+/*
+  Main container for the entire left-side dossier panel.
+  It uses flexbox to position the summary card and tabs vertically.
+*/
+.dossier-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Makes the container fill the parent's height */
+  overflow: hidden; /* Prevents the container itself from scrolling */
+  padding: 16px;
+  gap: 20px; /* Space between summary card and tab group */
+  box-sizing: border-box;
+}
+
+/*
+  The wrapper inside each tab.
+  This is the key to making the content scrollable while the tabs stay fixed.
+*/
+.tab-content-wrapper {
+  padding: 20px 4px; /* Add some padding to the content inside the tab */
+  height: 100%;
+  overflow-y: auto; /* Enable vertical scrolling ONLY for the tab content */
+}
+
+
+/* --- Angular Material Tab Customization (Optional) --- */
+/* You can override Angular Material styles to match your app's theme. */
+/* For example, changing the color of the selected tab's underline. */
+:host ::ng-deep .mat-mdc-tab-body-content {
+    height: 100%;
+}
+
+:host ::ng-deep .mat-mdc-tab-group {
+    flex-grow: 1; /* Allows the tab group to fill remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+    flex-grow: 1;
+}
+
+:host ::ng-deep .mat-primary .mat-mdc-tab-header {
+  /* Example: Change the bottom border of the tab header */
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+:host ::ng-deep .mat-primary .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+  /* This is the moving ink bar for the active tab */
+  border-color: #00ff41; /* Match your app's green theme */
+  border-top-width: 3px;
+}
+
+:host ::ng-deep .mat-primary .mat-mdc-tab-label-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:host ::ng-deep .mat-primary .mat-mdc-tab.mat-mdc-tab-active .mat-mdc-tab-label-text {
+  color: #00ff41;
+}

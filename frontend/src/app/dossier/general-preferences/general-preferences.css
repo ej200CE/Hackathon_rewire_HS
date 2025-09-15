@@ -1,3 +1,6 @@
+:host {
+  box-sizing: border-box;
+}
 /* Main container */
 .preferences-container {
   padding: 20px;

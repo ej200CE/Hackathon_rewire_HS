@@ -1,45 +1,21 @@
-<div class="user-goals">
-  <div class="header">
-    <!-- <div class="avatar">{{ user.avatar }}</div> -->
-     <div class="avatar">
-  <img [src]="user.avatar" alt="User avatar" class="avatar-image">
-</div>
-    <div>
-      <h3>{{ user.name }}, {{ user.age }} ({{ user.sex }})</h3>
-      <p class="activity">{{ user.activity }}</p>
-    </div>
+<div class="user-goals-details">
+  <div class="detail-item">
+    <span class="detail-label">Activity Level:</span>
+    <span class="detail-value">{{ goalsData.activity }}</span>
   </div>
 
   <div class="goal-card">
-    <h4 class="goal-title">Current Goal: {{ user.goal }}</h4>
-    <p class="goal-description">{{ user.description }}</p>
-  </div>
-
-  <div class="macros-container">
-    <div class="macro-item">
-      <span class="macro-value">{{ user.macros.protein }}g</span>
-      <span class="macro-label">Protein</span>
-    </div>
-    <div class="macro-item">
-      <span class="macro-value">{{ user.macros.carbs }}g</span>
-      <span class="macro-label">Carbs</span>
-    </div>
-    <div class="macro-item">
-      <span class="macro-value">{{ user.macros.fats }}g</span>
-      <span class="macro-label">Fats</span>
-    </div>
+    <h4 class="goal-title">Goal Description</h4>
+    <p class="goal-description">{{ goalsData.description }}</p>
   </div>
 
   <div class="calorie-info">
-    <p>Maintenance: <strong>{{ user.maintenanceCalories }} kcal</strong></p>
-    <p>Current Target: <strong>{{ user.calorieTarget }} kcal</strong></p>
-    <p>Estimated Weekly Change: <strong>{{ user.estimatedWeeklyChange }}</strong></p>
+    <p>Maintenance Calories: <strong>{{ goalsData.maintenanceCalories }} kcal</strong></p>
+    <p>Estimated Weekly Change: <strong>{{ goalsData.estimatedWeeklyChange }}</strong></p>
   </div>
 
-  <div class="macro-chart">
-    <!-- Simple CSS chart - replace with proper chart component later -->
-    <div class="chart-bar protein" [style.flex-grow]="user.macros.ratio[0]"></div>
-    <div class="chart-bar carbs" [style.flex-grow]="user.macros.ratio[1]"></div>
-    <div class="chart-bar fats" [style.flex-grow]="user.macros.ratio[2]"></div>
+  <div class="detail-item">
+    <span class="detail-label">Vitals:</span>
+    <span class="detail-value">{{ goalsData.age }} years old, {{ goalsData.sex }}</span>
   </div>
 </div>

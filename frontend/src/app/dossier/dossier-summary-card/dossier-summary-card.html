@@ -1,0 +1,32 @@
+<div class="summary-card">
+  <div class="header">
+    <div class="avatar">
+      <img [src]="summaryData.avatar" alt="User avatar" class="avatar-image">
+    </div>
+    <div>
+      <h3>{{ summaryData.name }}</h3>
+      <p class="goal-subtitle">Goal: {{ summaryData.goal }}</p>
+    </div>
+  </div>
+
+  <div class="metrics-container">
+    <div class="calorie-target">
+      <span class="calorie-value">{{ summaryData.calorieTarget }}</span>
+      <span class="calorie-label">kcal Target</span>
+    </div>
+    <div class="macros-container">
+      <div class="macro-item">
+        <span class="macro-value">{{ summaryData.macros.protein }}g</span>
+        <span class="macro-label">Protein</span>
+      </div>
+      <div class="macro-item">
+        <span class="macro-value">{{ summaryData.macros.carbs }}g</span>
+        <span class="macro-label">Carbs</span>
+      </div>
+      <div class="macro-item">
+        <span class="macro-value">{{ summaryData.macros.fats }}g</span>
+        <span class="macro-label">Fats</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="allergies-container">
+  <h3 class="section-title">
+    ⚠️ Critical Allergies & Intolerances
+  </h3>
+  <p class="section-description">
+    This information is critical for all recommendations. Please ensure it is accurate.
+  </p>
+
+  @if (allergiesData && allergiesData.length > 0) {
+    <div class="tags-wrapper">
+      @for (allergy of allergiesData; track allergy) {
+        <span class="allergy-tag">
+          {{ allergy }}
+        </span>
+      }
+    </div>
+  } @else {
+    <div class="no-allergies-message">
+      <p>No allergies have been listed.</p>
+    </div>
+  }
+</div>

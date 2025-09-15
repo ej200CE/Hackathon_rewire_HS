@@ -1,29 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Define the type for the food data
+type FoodData = {
+  favorites: string[];
+  dislikes: string[];
+};
 
 @Component({
   selector: 'app-food-preferences',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './food-preferences.html',
   styleUrl: './food-preferences.css'
 })
 export class FoodPreferences {
-    foodPreferences = {
-    favorites: [
-      'Pasta', 'Grilled Chicken', 'Avocado', 
-      'Dark Chocolate', 'Berries', 'Salmon',
-      'Sweet Potatoes', 'Almonds', 'Greek Yogurt'
-    ],
-    dislikes: [
-      'Liver', 'Brussels Sprouts', 'Black Licorice',
-      'Cottage Cheese', 'Tofu', 'Olives',
-      'Blue Cheese', 'Anchovies', 'Okra'
-    ]
-  };
-
-  // Utility function to chunk array for columns
-  chunkArray(arr: any[], size: number): any[] {
-    return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-      arr.slice(i * size, i * size + size)
-    );
-  }
+  // @Input() receives the food data from the parent component
+  @Input() foodData!: FoodData;
 }

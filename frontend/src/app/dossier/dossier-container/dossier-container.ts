@@ -1,36 +1,34 @@
-// src/app/dossier/dossier.ts
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 
-// Import all the child components
-import { DossierSummaryCard } from './dossier-summary-card/dossier-summary-card';
-import { UserGoals } from './user-goals/user-goals';
-import { GeneralPreferences } from './general-preferences/general-preferences';
-import { FoodPreferences } from './food-preferences/food-preferences';
-import { Allergies } from './allergies/allergies';
+// --- CORRECTED IMPORTS (without 'Component' suffix in class name and '.component' in path) ---
+import { DossierSummaryCard } from '../dossier-summary-card/dossier-summary-card';
+import { UserGoals } from '../user-goals/user-goals';
+import { GeneralPreferences } from '../general-preferences/general-preferences';
+import { FoodPreferences } from '../food-preferences/food-preferences';
+import { Allergies } from '../allergies/allergies';
 
 @Component({
-  // ✅ Ensure selector matches your app.html
-  selector: 'app-dossier',
+  selector: 'app-dossier-container',
   standalone: true,
   imports: [
     CommonModule,
     MatTabsModule,
+    // --- CORRECTED IMPORTS ARRAY ---
     DossierSummaryCard,
     UserGoals,
     GeneralPreferences,
     FoodPreferences,
     Allergies
   ],
-  // ✅ Ensure paths point to your dossier.html and dossier.css
-  templateUrl: './dossier.html',
-  styleUrl: './dossier.css'
+  // --- CORRECTED URL (remove '.component') ---
+  templateUrl: './dossier-container.html',
+  styleUrl: './dossier-container.css'
 })
-// ✅ Ensure class name matches your app.ts import
-export class Dossier {
-  // The centralized user profile object we created earlier
+export class DossierContainer {
+  // --- Centralized User Profile Object ---
+  // This is the single source of truth for the entire user profile.
   userProfile = {
     summary: {
       name: 'Leha',

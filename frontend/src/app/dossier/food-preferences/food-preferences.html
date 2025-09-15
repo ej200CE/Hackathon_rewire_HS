@@ -1,14 +1,11 @@
 <div class="food-preferences">
-  <h3 class="section-title">Food Preferences</h3>
-  
   <div class="preferences-grid">
-    <!-- Favorites Column -->
     <div class="preference-column">
       <h4 class="column-title">
         <span class="icon">✓</span> Favorite Foods
       </h4>
       <ul class="food-list">
-        @for (food of foodPreferences.favorites; track food) {
+        @for (food of foodData.favorites; track food) {
           <li class="food-item favorite">
             {{ food }}
           </li>
@@ -16,13 +13,12 @@
       </ul>
     </div>
 
-    <!-- Dislikes Column -->
     <div class="preference-column">
       <h4 class="column-title">
         <span class="icon">✗</span> Disliked Foods
       </h4>
       <ul class="food-list">
-        @for (food of foodPreferences.dislikes; track food) {
+        @for (food of foodData.dislikes; track food) {
           <li class="food-item dislike">
             {{ food }}
           </li>
@@ -30,16 +26,4 @@
       </ul>
     </div>
   </div>
-
-  <!-- Dietary Restrictions
-  <div class="dietary-section">
-    <h4 class="section-subtitle">
-      <span class="icon">!</span> Dietary Restrictions
-    </h4>
-    <div class="restrictions-grid">
-      @for (item of foodPreferences.dietaryRestrictions; track item) {
-        <span class="restriction-tag">{{ item }}</span>
-      }
-    </div>
-  </div> -->
 </div>

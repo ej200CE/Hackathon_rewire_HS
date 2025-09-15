@@ -1,34 +1,68 @@
-/* Dossier container - make more responsive */
-.dossier-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  height: fit-content;
-  min-height: 0;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px;
-  box-sizing: border-box;
-}
+/* src/app/dossier/dossier.css */
 
-@media (max-width: 768px) {
-  .dossier-container {
-    padding: 10px;
-  }
-}
-
-/* Child components - remove margins */
-app-user-goals,
-app-general-preferences,
-app-food-preferences {
-  display: block;
-  /* Remove margin-bottom since we're using gap */
-}
-
-/* Optional: Add smooth expansion when content loads */
 :host {
-  display: block;
-  overflow: hidden; /* Contain children */
-  transition: height 0.3s ease;
+  /* -- Color & Readability Variables -- */
+  --primary-green: #00ff41;
+  --secondary-green: #00dd3a;
+  --dim-text-color: #a0a0a0;
+  --border-color: rgba(0, 170, 0, 0.4);
+
+  /* --- MODIFIED FOR CSS GRID --- */
+  display: grid; /* 1. Changed from flex to grid */
+  grid-template-rows: auto 1fr; /* 2. Define rows: card is auto-height, tabs take the rest */
+  height: 100%;
+  overflow: hidden; /* This is still crucial */
+  gap: 15px;
+  color: var(--primary-green);
+}
+
+app-dossier-summary-card {
+  flex-shrink: 0; /* This no longer has an effect in grid, but is harmless to leave */
+}
+
+/* === TAB GROUP STYLES (ADJUSTED FOR GRID) === */
+
+mat-tab-group {
+  /* flex-grow: 1; -> This is a flex property and is no longer needed */
+  display: flex; /* This MUST stay flex for the tab's INTERNAL layout */
+  flex-direction: column;
+  min-height: 0; /* CRITICAL: This is still needed to help the tab group fit into the grid area */
+}
+
+/* The rest of the styles remain the same */
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+  flex-grow: 1;
+}
+
+:host ::ng-deep .mat-mdc-tab-body {
+  height: 100%;
+  display: flex;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-content {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto !important;
+  padding: 1rem 0.5rem;
+}
+
+/* === TAB THEME STYLES === */
+
+:host ::ng-deep .mat-mdc-tab-header {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+:host ::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+  color: var(--dim-text-color) !important;
+  opacity: 0.8;
+}
+
+:host ::ng-deep .mat-mdc-tab.mat-mdc-tab-active .mdc-tab__text-label {
+  color: var(--primary-green) !important;
+  opacity: 1;
+}
+
+:host ::ng-deep .mat-mdc-tab-group.mat-primary .mdc-tab-indicator__content--underline {
+  border-color: var(--primary-green) !important;
+  border-top-width: 3px;
 }

@@ -1,32 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// Define a type for the component's expected data
+type GoalsData = {
+  age: number;
+  sex: string;
+  description: string;
+  activity: string;
+  maintenanceCalories: number;
+  estimatedWeeklyChange: string;
+};
 
 @Component({
   selector: 'app-user-goals',
-  imports: [],
+  standalone: true, // Assuming standalone
+  imports: [CommonModule],
   templateUrl: './user-goals.html',
   styleUrl: './user-goals.css'
 })
 export class UserGoals {
-
-  /* Dossier container - prevent unnecessary scroll */
-  user = {
-    name: 'Leha',
-    age: 45,
-    sex: 'Skuf',
-    // avatar: '👨', // or use image path
-    avatar: 'assets/kaban.png',
-    goal: 'Muscle Gain',
-    description: 'Focusing on lean muscle development while minimizing fat gain',
-    macros: {
-      protein: 180,
-      carbs: 250,
-      fats: 70,
-      ratio: [0.35, 0.45, 0.20] // Protein/Carbs/Fats ratio
-    },
-    activity: 'Moderately Active (3-5 workouts/week)',
-    maintenanceCalories: 2500,
-    calorieTarget: 2800, // +300 surplus
-    estimatedWeeklyChange: '+0.3kg'
-  };
-
+  // @Input() receives the goal-specific data from the parent component
+  @Input() goalsData!: GoalsData;
 }
