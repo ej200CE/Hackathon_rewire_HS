@@ -1,5 +1,3 @@
-# agent.py
-
 import pika
 import json
 import requests
@@ -8,118 +6,107 @@ from dotenv import load_dotenv
 import openai
 import os
 
-# Load environment variables from the .env file (for OPENAI_API_KEY)
+# Load environment variables from .env file for OPENAI_API_KEY
 load_dotenv()
 
 # --- Configuration ---
 RABBITMQ_HOST = 'localhost'
-# This queue name is created by MassTransit based on your C# record's namespace and name.
-# It's crucial that this name matches EXACTLY.
 QUEUE_NAME = 'FoodVenikWebApi:AgentJobPayload'
-# This is the internal endpoint of your .NET backend.
-# Use the static IP we configured.
 BACKEND_RESPONSE_URL = 'https://localhost:7160/internal/agent-response'
 
-# This is the new function to replace your old one.
-import openai
-import os
-
-# Initialize the OpenAI client. It will automatically find the API key
-# from the .env file we're about to load.
+# Initialize the OpenAI client
 client = openai.OpenAI()
 
-def process_message(payload):
+
+def generate_food_recommendation(payload):
     """
-    This function takes the user's message, sends it to the OpenAI API,
-    and returns the model's response.
+    Acts as a nutritionist/coach to provide food recommendations based on the user's dossier.
+    Handles cases where the dossier might be missing.
     """
+    user_id = payload['userId']
     user_message = payload['newMessage']
-    print(f" [x] Received job for user: {payload['userId']}")
-    print(f" [x] New message: {user_message}")
+    # 👇 Safely get the userProfile. It will be None if the key doesn't exist.
+    user_profile = payload.get('userProfile')
+
+    print(f" [✅] Received job for user: {user_id}")
+    print(f" [💬] User Query: {user_message}")
 
     try:
-        # Define the persona and the user's query for the AI model
-        messages_for_api = [
-            {"role": "system", "content": "Make a small poem (5 rows max) about the messages"},
-            {"role": "user", "content": user_message}
-        ]
+        # --- THIS IS THE NEW LOGIC ---
+        # Check if the user profile exists and is not empty
+        if user_profile:
+            print(f" [👤] User Profile Loaded. Goal: {user_profile.get('summary', {}).get('goal', 'N/A')}")
+            
+            # 1. System Prompt for a PERSONALIZED response
+            system_prompt = """
+            You are an expert nutritionist and encouraging fitness coach. Your role is to provide personalized,
+            practical, and safe food recommendations. You will be given a user's detailed profile as a JSON object
+            and their specific question.
+            **Your Rules:**
+            1.  **Strictly Adhere to the Profile:** All recommendations MUST be based on the user's provided profile.
+            2.  **Safety First:** Explicitly mention and respect all allergies listed.
+            3.  **Keep it Concise:** Provide clear, direct answers.
+            """
 
-        # Call the OpenAI API
+            # 2. User Prompt with the full profile context
+            user_prompt = f"""
+            Here is the user's profile:
+            ```json
+            {json.dumps(user_profile, indent=2)}
+            ```
+            Based strictly on the profile above, please answer the following question: "{user_message}"
+            """
+        else:
+            # Fallback logic if the profile is missing
+            print(" [⚠️] User profile is missing. Providing a generic response.")
+            
+            # 1. System Prompt for a GENERIC response
+            system_prompt = """
+            You are a helpful nutritionist and food assistant. Answer the user's question about food or recipes
+            in a general, helpful way. The user's specific profile was not available.
+            """
+            
+            # 2. User Prompt is just their direct question
+            user_prompt = user_message
+        
+        # 3. Call the OpenAI API with the chosen prompts
         completion = client.chat.completions.create(
-          model="gpt-3.5-turbo",
-          messages=messages_for_api
+          model="gpt-4-turbo-preview",
+          messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+          ]
         )
-
         agent_answer = completion.choices[0].message.content
 
     except Exception as e:
         print(f" [!] Error calling OpenAI API: {e}")
-        agent_answer = "Sorry, I'm having trouble connecting to my AI brain right now. Please try again later."
+        agent_answer = "Sorry, my AI brain is a bit scrambled right now. Please try again."
 
-    # Return the data in the format the .NET backend expects
-    return {
-        "userId": payload['userId'],
-        "message": agent_answer
-    }
-
-def process_messagev2(payload):
-    """
-    This is where the core logic of the agent goes.
-    """
-    print(f" [x] Received job for user: {payload['userId']}")
-    print(f" [x] New message: {payload['newMessage']}")
-
-    # --- TODO: Add your AI and database logic here ---
-    # 1. Understand the user's intent from `newMessage`.
-    # 2. Query the RDS database for products, discounts, etc.
-    # 3. Generate a helpful response.
-    # For now, we'll just fake a response after a delay.
-    time.sleep(3)
-    agent_answer = f"I processed your message: '{payload['newMessage']}'. Here is some info from the database!"
-
-    return {
-        "userId": payload['userId'],
-        "message": agent_answer
-    }
+    return { "userId": user_id, "message": agent_answer }
 
 
 def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST))
     channel = connection.channel()
-
-    # In this publish/subscribe pattern, the exchange name is the same as the queue name
     EXCHANGE_NAME = QUEUE_NAME
 
-    # 1. The consumer should also declare the exchange to ensure it exists.
-    #    MassTransit's "Publish" uses a 'fanout' exchange by default.
     channel.exchange_declare(exchange=EXCHANGE_NAME, exchange_type='fanout', durable=True)
-
-    # 2. The consumer declares the queue.
     channel.queue_declare(queue=QUEUE_NAME, durable=True)
-
-    # 3. *** THIS IS THE MISSING STEP ***
-    #    Bind the queue to the exchange to receive messages.
     channel.queue_bind(exchange=EXCHANGE_NAME, queue=QUEUE_NAME)
-
-    print(f' [*] Queue "{QUEUE_NAME}" is bound to exchange "{EXCHANGE_NAME}". Waiting for messages.')
+    print(f' [*] Queue "{QUEUE_NAME}" is bound and waiting for messages.')
 
     def callback(ch, method, properties, body):
-        # Decode the entire envelope
-        envelope = json.loads(body.decode())
-        
-        # Extract your actual payload from the 'message' key
-        payload = envelope['message']
-        
-        # Now the rest of the code will work perfectly
-        response_data = process_message(payload)
         try:
-            # Note: verify=False is used to ignore SSL certificate errors for local dev.
+            envelope = json.loads(body.decode())
+            payload = envelope['message']
+            response_data = generate_food_recommendation(payload)
             requests.post(BACKEND_RESPONSE_URL, json=response_data, verify=False)
             print(f" [>] Sent response for user: {response_data['userId']}")
-        except requests.exceptions.RequestException as e:
-            print(f" [!] Could not send response to backend: {e}")
-
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+        except Exception as e:
+            print(f" [!] An error occurred in the callback: {e}")
+        finally:
+            ch.basic_ack(delivery_tag=method.delivery_tag)
 
     channel.basic_consume(queue=QUEUE_NAME, on_message_callback=callback)
     channel.start_consuming()

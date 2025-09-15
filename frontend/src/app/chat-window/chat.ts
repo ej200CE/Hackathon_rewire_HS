@@ -4,25 +4,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as signalR from '@microsoft/signalr';
 import { Subject } from 'rxjs';
+import { DossierService } from '../dossier/dossier-service'; // 👈 1. Import the DossierService
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  // --- IMPORTANT ---
-  // Replace this URL with your actual .NET backend's HTTPS URL
-  // You can find it in your backend's Properties/launchSettingsCross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://172.22.225.165:7160/chathub/negotiate?negotiateVersion=1. (Reason: CORS request did not succeed). Status code: (null).
   private backendUrl = 'http://localhost:5065';
-  //private backendUrl = 'https://172.22.225.165:7160';
-
   private hubConnection!: signalR.HubConnection;
-
-  // Use an RxJS Subject to stream agent messages to components
   public agentMessage$ = new Subject<string>();
 
-  constructor(private http: HttpClient) { }
+  // 👇 2. Inject the DossierService in the constructor
+  constructor(private http: HttpClient, private dossierService: DossierService) { }
 
-  // 1. Starts the SignalR connection to the ChatHub
+  // This method remains unchanged
   public startConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${this.backendUrl}/chathub`)
@@ -33,16 +28,23 @@ export class ChatService {
       .then(() => console.log('SignalR Connection started'))
       .catch(err => console.error('Error while starting connection: ' + err));
 
-    // Listen for messages from the "ReceiveMessage" event sent by the server
     this.hubConnection.on('ReceiveMessage', (message: string) => {
       this.agentMessage$.next(message);
     });
   }
 
-  // 2. Sends a user's message to the backend's /chat endpoint
+  // 👇 3. Update the sendMessage method to include the profile
   public sendMessage(userMessage: string) {
-    const payload = { text: userMessage };
-    // This calls the API endpoint that queues the job in RabbitMQ
+    // Get the current user profile from the DossierService
+    const userProfile = this.dossierService.getCurrentProfile();
+
+    // Create the new payload including both the text and the profile
+    const payload = {
+      text: userMessage,
+      profile: userProfile
+    };
+
+    // Send the complete payload to the backend
     return this.http.post(`${this.backendUrl}/chat`, payload);
   }
 }
