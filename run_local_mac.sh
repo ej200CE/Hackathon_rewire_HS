@@ -84,7 +84,7 @@ fi
 
 # Check for API Key
 if ! grep -q "OPENAI_API_KEY" .env; then
-    echo "⚠️  WARNING: OPEN_API_KEY is missing in ./backend/sample-agent/.env"
+    echo "⚠️  WARNING: OPENAI_API_KEY is missing in ./backend/sample-agent/.env"
     echo "   Please add it manually for the agent to function correctly."
 fi
 
@@ -97,6 +97,12 @@ cd ../..
 # 4. Frontend Setup
 echo "------------------------------------------------"
 echo "⚛️  Configuring Frontend..."
+
+# Check if npm is installed
+if ! command -v npm &> /dev/null; then
+    echo "📦 npm not found. Installing Node.js (which includes npm)..."
+    brew install node
+fi
 
 cd ./frontend
 if [ ! -d "node_modules" ]; then

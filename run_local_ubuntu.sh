@@ -17,9 +17,6 @@ trap cleanup SIGINT EXIT
 
 echo "🚀 Starting Local Development Environment (Ubuntu)..."
 
-# Update package list lightly
-# sudo apt-get update
-
 # 1. RabbitMQ Setup
 echo "------------------------------------------------"
 echo "🐰 Configuring RabbitMQ..."
@@ -48,11 +45,8 @@ echo "🔷 Configuring Backend (Dotnet)..."
 
 if ! command -v dotnet &> /dev/null; then
     echo "📦 Installing .NET SDK..."
-    # Prerequisites for Microsoft Repo
     sudo apt-get install -y wget apt-transport-https
     
-    # Register Microsoft Key and Feed (Standard Ubuntu 22.04/24.04 logic)
-    # Note: If this fails, user might need specific instructions for their Ubuntu version
     if [ ! -f /etc/apt/sources.list.d/dotnet.list ]; then
         wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
         sudo dpkg -i packages-microsoft-prod.deb
@@ -75,7 +69,6 @@ echo "🐍 Configuring Agent (Python/UV)..."
 if ! command -v uv &> /dev/null; then
     echo "📦 Installing uv (Python package manager)..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    # Ensure uv is in path for this session
     source $HOME/.cargo/env 2>/dev/null || export PATH="$HOME/.local/bin:$PATH"
 fi
 
@@ -88,12 +81,11 @@ if [ ! -f .env ]; then
 fi
 
 if ! grep -q "OPENAI_API_KEY" .env; then
-    echo "⚠️  WARNING: OPEN_API_KEY is missing in ./backend/sample-agent/.env"
+    echo "⚠️  WARNING: OPENAI_API_KEY is missing in ./backend/sample-agent/.env"
     echo "   Please add it manually."
 fi
 
 echo "   Starting Agent in background..."
-# Ensure dependencies are installed and run
 uv run main.py & 
 cd ../..
 
